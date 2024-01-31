@@ -1,10 +1,10 @@
 import {
   backupFlownarioData,
-  flownarioInputs,
   generateCombinations,
   validate,
   writeFlownarioData
-} from "./flownarios.js";
+} from "./flownarios-server.js";
+import { flownarioInputs } from "./flownarios-client.js";
 
 
 backupFlownarioData("createCombinations")

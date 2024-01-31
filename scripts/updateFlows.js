@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import scenarios from "./flownarioData.js";
-import { flownarioConstants } from "./flownarios.js";
+import { flownarioConstants } from "./flownarios-client.js";
 
 for (const scenario of scenarios) {
   

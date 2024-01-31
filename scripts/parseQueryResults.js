@@ -1,7 +1,7 @@
 import process from "node:process";
 import fs from "node:fs";
 import scenarios from "./flownarioData.js";
-import { backupFlownarioData, writeFlownarioData } from "./flownarios.js";
+import { backupFlownarioData, writeFlownarioData } from "./flownarios-server.js";
 
 function getPathAndState(input) {
   if (input === undefined ) {

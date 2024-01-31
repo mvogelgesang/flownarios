@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import scenarios from "./flownarioData.js";
-import {getDescription, flownarioConstants} from "./flownarios.js"
+import {getDescription, flownarioConstants} from "./flownarios-client.js"
 
 const screenFlowRegex = /<screens>\s*(.*?)\s*<\/screens>\s*<start>\s*(.*?)\s*<\/start>/s;
 const recordTriggeredFlowRegex = /<recordUpdates>\s*(.*?)\s*<\/recordUpdates>\s*<start>\s*(.*?)\s*<\/start>/s;
