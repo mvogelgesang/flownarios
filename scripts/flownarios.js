@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import scenarios from "./flownarioData.js";
 
 const flownarioConstants = {
@@ -15,7 +16,10 @@ const flownarioConstants = {
   <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
   <fieldType>DisplayText</fieldType>
 </fields>`,
-  RECORD_METADATA_UPDATE: "<stringValue>Appy the Bobcat Enterprises Too</stringValue>"
+  RECORD_METADATA_UPDATE:
+    "<stringValue>Appy the Bobcat Enterprises Too</stringValue>",
+  DATA_FILE: "scripts/flownarioData.js",
+  BACKUP_PATH: "scripts/backup"
 };
 
 const flownarioInputs = [
@@ -23,15 +27,26 @@ const flownarioInputs = [
   {
     v1State: [flownarioConstants.ACTIVE_FLOW, flownarioConstants.INACTIVE_FLOW]
   },
-  { v1Type: [flownarioConstants.SCREEN_FLOW, flownarioConstants.RECORD_TRIGGERED] },
-  { v1TempOver: [flownarioConstants.TEMPLATE, flownarioConstants.OVERRIDEABLE, "none"] },
+  {
+    v1Type: [
+      flownarioConstants.SCREEN_FLOW,
+      flownarioConstants.RECORD_TRIGGERED
+    ]
+  },
+  {
+    v1TempOver: [
+      flownarioConstants.TEMPLATE,
+      flownarioConstants.OVERRIDEABLE,
+      "none"
+    ]
+  },
   { ccState: ["activates", "deactivates", "none"] },
   // "overrides - Active adds outputs",  "overrides - Active adds inputs",  "overrides - Active removes outputs",  "overrides - Active removes inputs,  "overrides - Active flow w/ metadata changes","overrides - Inactive flow w/ metadata changes"
   {
     ccOverride: [
       "none",
       "overrides - Active (no other metadata changes)",
-      "overrides - Inactive (no other metadata changes)",
+      "overrides - Inactive (no other metadata changes)"
     ]
   },
   { v2Metadata: ["change", "no change"] },
@@ -42,61 +57,43 @@ const flownarioInputs = [
   { v2ApiVersion: ["same", "update"] }
 ];
 
-const flownarioInputsAsObject = () => {
-  const flownarioObjects = flownarioInputs.reduce((result, currentObject) => {
-  // Extract the key (property name) and value from the current object
-  const [key, value] = Object.entries(currentObject)[0];
-
-  // Add the key-value pair to the result object
-  result[key] = value;
-
-  return result;
-  }, {});
-  return flownarioObjects;
-}
-
-const howManyRemain = () => {
-  const inputValues = {};
-
-  document.querySelector("#remaining").classList.remove("slds-theme_warning")
-    document.querySelector("#remaining").classList.add("slds-theme_shade")
-  // Collect input values dynamically
-  for (const [key, val] of Object.entries(flownarioInputsAsObject())) {
-    const inputValue = document.getElementById(key).value.trim();
-    inputValues[key] = inputValue;
-  }
-
-  // Filter array based on input values
-  const filteredData = scenarios.filter((item) => {
-    return Object.keys(inputValues).every((key) => {
-      // Check if input field is not blank before applying filter
-      return (
-        inputValues[key] === "" ||
-        item[key].toString().startsWith(inputValues[key])
+const backupFlownarioData = (postfix) => {
+  postfix = `${postfix}_${new Date().toISOString()}`;
+  const filename = getFilename();
+  // Check if the source file exists
+  fs.access(flownarioConstants.DATA_FILE, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(
+        `Source file does not exist: ${flownarioConstants.DATA_FILE}`
       );
+      return;
+    }
+
+    // If the source file exists, read its content and write it to the destination file
+    fs.readFile(flownarioConstants.DATA_FILE, "utf8", (readErr, data) => {
+      if (readErr) {
+        console.error(`Error reading source file: ${readErr.message}`);
+        return;
+      }
+      if (!fs.existsSync(flownarioConstants.BACKUP_PATH)) {
+        fs.mkdir(flownarioConstants.BACKUP_PATH);
+      }
+      const destinationFilePath = `${flownarioConstants.BACKUP_PATH}/${filename}_${postfix}.js`;
+      // Write the content to the destination file
+      fs.writeFile(destinationFilePath, data, "utf8", (writeErr) => {
+        if (writeErr) {
+          console.error(
+            `Error writing to destination file: ${writeErr.message}`
+          );
+          return;
+        }
+
+        console.log(
+          `File copied from ${flownarioConstants.DATA_FILE} to ${destinationFilePath}`
+        );
+      });
     });
   });
-  if (filteredData.length == 1) {
-    document.getElementById("result").innerText =
-      filteredData[0].pkgV2DeployedState + " this is the result!";
-    document.getElementById("description").innerText = getDescription(
-      filteredData[0]
-    );
-  } else if (filteredData.length == 0) {
-    document.querySelector("#remaining").classList.add("slds-theme_warning")
-    document.querySelector("#remaining").classList.remove("slds-theme_shade")
-  }
-  document.querySelector("#remaining span").innerText = `${filteredData.length} scenarios remain`;
-};
-
-const getDescription = (scenario) => {
-  let result = "";
-  for (const [key, value] of Object.entries(scenario)) {
-    if (!key.startsWith('pkg') && !key.startsWith('customer')) {
-      result += `${key}: ${value}\n`;
-    }
-  }
-  return result;
 };
 
 const createFormFields = () => {
@@ -118,7 +115,7 @@ const createFormFields = () => {
     '<div class="slds-text-heading_medium">Customer Changes</div>';
   const col3 = document.getElementById("col-3");
   col3.innerHTML = '<div class="slds-text-heading_medium">Package v2</div>';
-  
+
   // need to transform the datastructure for parsing into fields
   const flownarioObjects = flownarioInputsAsObject();
   for (const field in flownarioObjects) {
@@ -161,6 +158,133 @@ const createFormFields = () => {
   }
 };
 
+const flownarioInputsAsObject = () => {
+  const flownarioObjects = flownarioInputs.reduce((result, currentObject) => {
+    // Extract the key (property name) and value from the current object
+    const [key, value] = Object.entries(currentObject)[0];
+
+    // Add the key-value pair to the result object
+    result[key] = value;
+
+    return result;
+  }, {});
+  return flownarioObjects;
+};
+
+const generateCombinations = (...objects) => {
+  // Helper function to generate combinations recursively
+  function generate(currentCombination, remainingObjects) {
+    if (remainingObjects.length === 0) {
+      const hash = simpleHash(Object.values(currentCombination).join(", "));
+      // If no more objects to process, create a  hash and add the current combination to the result
+      const hashedCombination = {
+        ...currentCombination,
+        hash: hash,
+        pkgV1DeployedState: {
+          activeVersion: "",
+          apiVersion: "",
+          description: "",
+          status: "",
+          totalVersions: ""
+        },
+        customerChangesState: {
+          activeVersion: "",
+          apiVersion: "",
+          description: "",
+          status: "",
+          totalVersions: ""
+        },
+        pkgV2DeployedState: {
+          activeVersion: "",
+          apiVersion: "",
+          description: "",
+          status: "",
+          totalVersions: ""
+        },
+        flowName: `flownarios_${result.length}_${hash}`
+      };
+      if (validate(hashedCombination)) result.push(hashedCombination);
+      return;
+    }
+
+    const currentObject = remainingObjects[0];
+    const key = Object.keys(currentObject)[0];
+    const values = currentObject[key];
+
+    // Iterate through the values of the current object and generate combinations
+    for (let i = 0; i < values.length; i++) {
+      const newCombination = { ...currentCombination, [key]: values[i] };
+      const newRemainingObjects = [...remainingObjects.slice(1)];
+      generate(newCombination, newRemainingObjects);
+    }
+  }
+
+  // Result array to store all combinations
+  const result = [];
+
+  // Start the recursion with an empty combination and all input objects
+  generate({}, objects);
+
+  return result;
+};
+
+const getDescription = (scenario) => {
+  let result = "";
+  for (const [key, value] of Object.entries(scenario)) {
+    if (!key.startsWith("pkg") && !key.startsWith("customer")) {
+      result += `${key}: ${value}\n`;
+    }
+  }
+  return result;
+};
+
+const getFilename = () => {
+  const regex = /(?<=scripts\/)\w+/;
+  const resultArray = regex.exec(flownarioConstants.DATA_FILE);
+  if (resultArray === null) {
+    throw new Error(
+      `Filename could not be parsed: ${flownarioConstants.DATA_FILE}`
+    );
+  } else {
+    return resultArray[0];
+  }
+};
+
+const howManyRemain = () => {
+  const inputValues = {};
+
+  document.querySelector("#remaining").classList.remove("slds-theme_warning");
+  document.querySelector("#remaining").classList.add("slds-theme_shade");
+  // Collect input values dynamically
+  for (const [key, val] of Object.entries(flownarioInputsAsObject())) {
+    const inputValue = document.getElementById(key).value.trim();
+    inputValues[key] = inputValue;
+  }
+
+  // Filter array based on input values
+  const filteredData = scenarios.filter((item) => {
+    return Object.keys(inputValues).every((key) => {
+      // Check if input field is not blank before applying filter
+      return (
+        inputValues[key] === "" ||
+        item[key].toString().startsWith(inputValues[key])
+      );
+    });
+  });
+  if (filteredData.length == 1) {
+    document.getElementById("result").innerText =
+      filteredData[0].pkgV2DeployedState + " this is the result!";
+    document.getElementById("description").innerText = getDescription(
+      filteredData[0]
+    );
+  } else if (filteredData.length == 0) {
+    document.querySelector("#remaining").classList.add("slds-theme_warning");
+    document.querySelector("#remaining").classList.remove("slds-theme_shade");
+  }
+  document.querySelector("#remaining span").innerText =
+    `${filteredData.length} scenarios remain`;
+};
+
 // https://gist.github.com/jlevy/c246006675becc446360a798e2b2d781
 const simpleHash = (str) => {
   let hash = 0;
@@ -195,43 +319,15 @@ const validate = (scenarioObj) => {
   return true;
 };
 
-const generateCombinations = (...objects) => {
-  // Helper function to generate combinations recursively
-  function generate(currentCombination, remainingObjects) {
-    if (remainingObjects.length === 0) {
-      const hash = simpleHash(Object.values(currentCombination).join(", "));
-      // If no more objects to process, create a  hash and add the current combination to the result
-      const hashedCombination = {
-        ...currentCombination,
-        hash: hash,
-        pkgV1DeployedState: {activeVersion: "", apiVersion: "", description: "", status:"",totalVersions:""},
-        customerChangesState: {activeVersion: "", apiVersion: "", description: "", status:"",totalVersions:""},
-        pkgV2DeployedState: {activeVersion: "", apiVersion: "", description: "", status:"",totalVersions:""},
-        flowName: `flownarios_${result.length}_${hash}`
-      };
-      if (validate(hashedCombination)) result.push(hashedCombination);
-      return;
-    }
-
-    const currentObject = remainingObjects[0];
-    const key = Object.keys(currentObject)[0];
-    const values = currentObject[key];
-
-    // Iterate through the values of the current object and generate combinations
-    for (let i = 0; i < values.length; i++) {
-      const newCombination = { ...currentCombination, [key]: values[i] };
-      const newRemainingObjects = [...remainingObjects.slice(1)];
-      generate(newCombination, newRemainingObjects);
-    }
-  }
-
-  // Result array to store all combinations
-  const result = [];
-
-  // Start the recursion with an empty combination and all input objects
-  generate({}, objects);
-
-  return result;
+const writeFlownarioData = (data) => {
+  fs.writeFileSync(
+    flownarioConstants.DATA_FILE,
+    `const scenarios = ${JSON.stringify(
+      data,
+      null,
+      2
+    )};\nexport default scenarios;`
+  );
 };
 
 export {
@@ -242,5 +338,7 @@ export {
   createFormFields,
   simpleHash,
   validate,
-  generateCombinations
+  generateCombinations,
+  writeFlownarioData,
+  backupFlownarioData
 };

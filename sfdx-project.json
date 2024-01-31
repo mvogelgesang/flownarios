@@ -1,12 +1,25 @@
 {
   "packageDirectories": [
     {
-      "path": "force-app",
-      "default": true
+      "path": "force-app/main/default",
+      "package": "flownarios",
+      "versionName": "ver 0.1",
+      "versionNumber": "1.0.1.NEXT",
+      "ancestorVersion": "HIGHEST",
+      "default": true,
+      "versionDescription": "A collection of flow scenarios, flownarios, meant for testing outcomes between package version deployments."
     }
   ],
   "name": "20240102_flownarios",
-  "namespace": "",
+  "namespace": "mvpbo",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "59.0"
+  "sourceApiVersion": "58.0",
+  "packageAliases": {
+    "flownarios": "0HoHs000000blgwKAA",
+    "flownarios@0.1.0-2": "04tHs000000BrpdIAC",
+    "flownarios@0.1.0-3": "04tHs000000BrxyIAC",
+    "flownarios@0.1.0-4": "04tHs000000Bry3IAC",
+    "flownarios@1.0.0-1": "04tHs000000Bs2GIAS",
+    "flownarios@1.0.1-1": "04tHs000000BsmoIAC"
+  }
 }

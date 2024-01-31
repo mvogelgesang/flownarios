@@ -8,7 +8,7 @@ for (const scenario of scenarios) {
 
   let flowFile = fs.readFileSync(flowFileName, 'utf-8' );
 
-  const status = scenario.v2State.toLowerCase().includes("inactive") ? "Draft" : "Active";
+  const status = scenario.v2State.toLowerCase().includes("draft") ? "Draft" : "Active";
   
   let update = flowFile.replace(/<status>.*?<\/status>/g, status);
   if (scenario.v2ApiVersion === "update") {

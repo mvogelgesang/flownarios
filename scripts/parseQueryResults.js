@@ -1,6 +1,7 @@
 import process from "node:process";
 import fs from "node:fs";
 import scenarios from "./flownarioData.js";
+import { backupFlownarioData, writeFlownarioData } from "./flownarios.js";
 
 function getPathAndState(input) {
   if (input === undefined ) {
@@ -10,7 +11,7 @@ function getPathAndState(input) {
     return {path:"scripts/packageV1.json", stateKey: "pkgV1DeployedState"}
   } else if (input === "cc") {
     return {path:"scripts/customer.json", stateKey: "customerChangesState"}
-  } else if (input === "cc") {
+  } else if (input === "v2") {
     return {path:"scripts/packageV2.json", stateKey: "pkgV2DeployedState"}
   } else {
     throw new Error("You must pass a valid argument. Valid values are: v1, cc, v2");
@@ -36,6 +37,9 @@ const queryResultMap = queryResults.result.records.reduce((result, obj) => {
 
   return result;
 }, new Map());
+
+// backup contents of flownarioData.js just in case
+backupFlownarioData("stateKey");
 
 // loop the scenarios and write back contents from query results
 const updatedScenarios = scenarios.map(scenario => {
@@ -63,11 +67,4 @@ const updatedScenarios = scenarios.map(scenario => {
   return scenario;
 });
 
-fs.writeFileSync(
-  "scripts/flownarioData.js",
-  `const scenarios = ${JSON.stringify(
-    updatedScenarios,
-    null,
-    2
-  )};\nexport default scenarios;`
-);
+writeFlownarioData(updatedScenarios);
