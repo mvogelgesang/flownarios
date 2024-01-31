@@ -43,7 +43,7 @@ for (const scenario of scenarios) {
   let description = getDescription(scenario);
   description = description.replace(/&/,"&amp;");
 
-  const status = scenario.v1State.toLowerCase().includes("draft") ? "Draft" : "Active";
+  const status = scenario.v1State;
   const type = scenario.v1Type.toLowerCase().includes("screen") ? "Flow" : "AutoLaunchedFlow";
   const overrideable = scenario.v1TempOver.toLowerCase().includes("overrideable");
   const template = scenario.v1TempOver.toLowerCase().includes("template");
