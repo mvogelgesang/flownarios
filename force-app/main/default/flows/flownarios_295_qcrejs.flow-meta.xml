@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>{{API_VERSION}}</apiVersion>
-    <description>{{DESCRIPTION}}</description>
+    <apiVersion>58</apiVersion>
+    <description>v1State: Draft
+v1Type: record triggered
+v1TempOver: overrideable
+ccState: none
+ccOverride: overrides - Active (no other metadata changes)
+v2Metadata: no change
+v2State: Draft
+v2ApiVersion: update
+hash: qcrejs
+flowName: flownarios_295_qcrejs
+</description>
     <environments>Default</environments>
-    <interviewLabel>{{FLOW_NAME}} {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>flownarios_295_qcrejs {!$Flow.CurrentDateTime}</interviewLabel>
     <isOverridable>true</isOverridable>
-    <isTemplate>true</isTemplate>
-    <label>{{FLOW_NAME}}</label>
+    
+    <label>flownarios_295_qcrejs</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -25,25 +35,8 @@
             <stringValue>LightningFlowBuilder</stringValue>
         </value>
     </processMetadataValues>
-    <processType>{{FLOW_TYPE}}</processType>
-    <screens>
-        <name>{{FLOW_NAME}}label</name>
-        <label>{{FLOW_NAME}}label</label>
-        <locationX>176</locationX>
-        <locationY>134</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <start>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <connector>
-            <targetReference>{{FLOW_NAME}}label</targetReference>
-        </connector>
-    </start>
+    <processType>AutoLaunchedFlow</processType>
+    
     <recordUpdates>
         <name>Update</name>
         <label>Update</label>
@@ -75,7 +68,7 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>{{STATUS}}</status>
+    <status>Draft</status>
     <variables>
         <description>this is an input</description>
         <name>inputA</name>

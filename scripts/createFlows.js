@@ -1,37 +1,73 @@
-const fs = require("fs");
-const { parse } = require("csv-parse");
+import fs from "node:fs";
+import scenarios from "./flownarioData.js";
+import {getDescription, flownarioConstants} from "./flownarios.js"
 
+const screenFlowRegex = /<screens>\s*(.*?)\s*<\/screens>\s*<start>\s*(.*?)\s*<\/start>/s;
+const recordTriggeredFlowRegex = /<recordUpdates>\s*(.*?)\s*<\/recordUpdates>\s*<start>\s*(.*?)\s*<\/start>/s;
+
+const inputVarRegex = new RegExp(
+/\s+<variables>/.source
++ /\s+<description>this is an input<\/description>/.source
++ /\s+<name>inputA<\/name>/.source
++ /\s+<dataType>String<\/dataType>/.source
++ /\s+<isCollection>false<\/isCollection>/.source
++ /\s+<isInput>true<\/isInput>/.source
++ /\s+<isOutput>false<\/isOutput>/.source
++ /\s+<value>/.source
++ /\s+<stringValue><\/stringValue>/.source
++ /\s+<\/value>/.source
++ /\s+<\/variables>/.source
+);
+const outputVarRegex = new RegExp(
+/\s+<variables>/.source
++ /\s+<description>this is an output<\/description>/.source
++ /\s+<name>outputA<\/name>/.source
++ /\s+<dataType>String<\/dataType>/.source
++ /\s+<isCollection>false<\/isCollection>/.source
++ /\s+<isInput>false<\/isInput>/.source
++ /\s+<isOutput>true<\/isOutput>/.source
++ /\s+<value>/.source
++ /\s+<stringValue><\/stringValue>/.source
++ /\s+<\/value>/.source
++ /\s+<\/variables>/.source
+)
 let count = 0;
 
-fs.createReadStream("scripts/data.csv")
-  .pipe(
-    parse({
-      delimiter: ",",
-      ltrim: true,
-    })
-  )
-  .on("data", function (row) {
-    
-    const hash = row[3].substring(0,7);
-    const description = `Pkg v1: ${row[0]}\nCust Changes: ${row[1]}\nPkg v2: ${row[2]}\n${hash}`;
-    const status = row[0].includes("inactive") ? "Draft" : "Active";
-    const newFlowFileName = `force-app/main/default/flows/${hash}.flow-meta.xml`;
-    fs.copyFileSync("scripts/flowTemplate.xml", newFlowFileName);
-    let newFile = fs.readFileSync(newFlowFileName, 'utf-8' );
-   
-    let update = newFile.replace(/{{NAME}}/g,hash);
-    update = update.replace(/{{DESCRIPTION}}/g,description);
-    update = update.replace(/{{STATUS}}/g,status);
-   
-    fs.writeFileSync(newFlowFileName, update);
-    count++;
-    
-  })
-  .on("error", function (error) {
-    console.log(error.message);
-  })
-  .on("end", function () {
-    // Here log the result array
-    console.log(`Created ${count} flows`);
-  });
+for (const scenario of scenarios) {
+  
+  const newFlowFilePath = `force-app/main/default/flows/${scenario.flowName}.flow-meta.xml`;
+  fs.copyFileSync("scripts/flowTemplate.xml", newFlowFilePath);
 
+  let newFile = fs.readFileSync(newFlowFilePath, 'utf-8' );
+   
+  let description = getDescription(scenario);
+  description = description.replace(/&/,"&amp;");
+
+  const status = scenario.v1State.toLowerCase().includes("inactive") ? "Draft" : "Active";
+  const type = scenario.v1Type.toLowerCase().includes("screen") ? "Flow" : "AutoLaunchedFlow";
+  const overrideable = scenario.v1TempOver.toLowerCase().includes("overrideable");
+  const template = scenario.v1TempOver.toLowerCase().includes("template");
+
+  let update = newFile.replace(/{{FLOW_NAME}}/g,scenario.flowName);
+  update = update.replace(/{{API_VERSION}}/g, flownarioConstants.API_VERSION)
+  update = update.replace(/{{DESCRIPTION}}/g,description);
+  update = update.replace(/{{STATUS}}/g,status);
+  update = update.replace(/{{FLOW_TYPE}}/g,type);
+  if (type === "Flow") {
+    update = update.replace(recordTriggeredFlowRegex,"")
+  }
+  if (type === "AutoLaunchedFlow") {
+    update = update.replace(screenFlowRegex,"")
+  }
+
+  // clear out overrideable & template metadata if flow isn't of those
+  if (!overrideable) {
+    update = update.replace(/<isOverridable>true<\/isOverridable>/g,"");
+  }
+  if (!template) {
+    update = update.replace(/<isTemplate>true<\/isTemplate>/g,"");
+  }
+
+  fs.writeFileSync(newFlowFilePath, update);
+  count++;
+}
