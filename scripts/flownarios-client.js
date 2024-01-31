@@ -16,7 +16,7 @@ const flownarioConstants = {
   <fieldType>DisplayText</fieldType>
 </fields>`,
   RECORD_METADATA_UPDATE:
-    "<stringValue>Appy the Bobcat Enterprises Too</stringValue>",
+    "Appy the Bobcat Enterprises Too",
   DATA_FILE: "scripts/flownarioData.js",
   BACKUP_PATH: "scripts/backup"
 };
