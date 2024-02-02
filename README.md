@@ -10,6 +10,7 @@
     - [Creating the Managed Package](#creating-the-managed-package)
     - [Creating and Working in Subscriber Org](#creating-and-working-in-subscriber-org)
     - [Package v2](#package-v2)
+      - [Create the Package Version](#create-the-package-version)
   - [Packages](#packages)
 
 
@@ -155,13 +156,21 @@ Once all subscriber org changes are complete, query the org to gather informatio
 
 `npm run flownarioQueryCustomer`
 
+Commit changes to repository
+
+`git add scripts/*.json scripts/*.js`
+`git commit -m "customer changes complete`
+
 ### Package v2
 
 Apply metadata changes to flow files that reflect the desired updates in `flownarioData.js`
 
 `npm run updateFlows`
 
-MAKE METADATA CHANGES
+Not all flows will be updated. This is to reflect scenarios where there is no change to a flow from pkgV1 to pkgV2.
+
+#### Create the Package Version
+
 `sf package version create -v pboDevHub -k password123 -w 10 -p 0HoHs000000blgwKAA  --code-coverage`
 `sf package version promote -p {04t}`
 
@@ -180,3 +189,4 @@ Creates a local http server to serve up the flownarios.html page. The local http
 |---|---|
 |04tHs000000Bs2GIAS|Aligns with pkg v1 and has correct metadata for flows 0-160|
 |04tHs000000BsmoIAC|Aligns with pkg v1 and has correct metadata for flows 0-319|
+|04tHs000000BsrLIAS|Pkg v2|
