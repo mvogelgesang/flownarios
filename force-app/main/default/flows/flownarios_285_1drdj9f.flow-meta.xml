@@ -68,7 +68,7 @@ flowName: flownarios_285_1drdj9f
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>this is an input</description>
         <name>inputA</name>

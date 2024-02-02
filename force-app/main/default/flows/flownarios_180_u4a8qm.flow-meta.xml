@@ -55,7 +55,7 @@ flowName: flownarios_180_u4a8qm
         </connector>
     </start>
     
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>this is an input</description>
         <name>inputA</name>

@@ -47,7 +47,7 @@ flowName: flownarios_304_cparhj
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Appy the Bobcat Enterprises</stringValue>
+                <stringValue>Appy the Bobcat Enterprises Too</stringValue>
             </value>
         </filters>
         <inputAssignments>
@@ -68,7 +68,7 @@ flowName: flownarios_304_cparhj
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>this is an input</description>
         <name>inputA</name>

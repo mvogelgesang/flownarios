@@ -37,6 +37,11 @@ flowName: flownarios_171_138ixmb
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_171_138ixmblabel</name>
         <label>flownarios_171_138ixmblabel</label>
         <locationX>176</locationX>

@@ -37,6 +37,11 @@ flowName: flownarios_195_j2ymw6
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_195_j2ymw6label</name>
         <label>flownarios_195_j2ymw6label</label>
         <locationX>176</locationX>

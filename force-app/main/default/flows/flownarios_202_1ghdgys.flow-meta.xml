@@ -37,6 +37,11 @@ flowName: flownarios_202_1ghdgys
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_202_1ghdgyslabel</name>
         <label>flownarios_202_1ghdgyslabel</label>
         <locationX>176</locationX>

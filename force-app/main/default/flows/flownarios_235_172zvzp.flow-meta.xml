@@ -37,6 +37,11 @@ flowName: flownarios_235_172zvzp
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_235_172zvzplabel</name>
         <label>flownarios_235_172zvzplabel</label>
         <locationX>176</locationX>

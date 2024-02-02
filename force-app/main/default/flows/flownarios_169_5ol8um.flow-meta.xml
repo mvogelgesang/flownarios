@@ -37,6 +37,11 @@ flowName: flownarios_169_5ol8um
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_169_5ol8umlabel</name>
         <label>flownarios_169_5ol8umlabel</label>
         <locationX>176</locationX>
@@ -55,7 +60,7 @@ flowName: flownarios_169_5ol8um
         </connector>
     </start>
     
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>this is an input</description>
         <name>inputA</name>

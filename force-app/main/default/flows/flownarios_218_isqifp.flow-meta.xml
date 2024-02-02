@@ -37,6 +37,11 @@ flowName: flownarios_218_isqifp
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_218_isqifplabel</name>
         <label>flownarios_218_isqifplabel</label>
         <locationX>176</locationX>

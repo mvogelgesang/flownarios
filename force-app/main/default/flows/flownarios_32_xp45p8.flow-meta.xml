@@ -37,6 +37,11 @@ flowName: flownarios_32_xp45p8
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_32_xp45p8label</name>
         <label>flownarios_32_xp45p8label</label>
         <locationX>176</locationX>

@@ -37,6 +37,11 @@ flowName: flownarios_49_1upk6gv
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_49_1upk6gvlabel</name>
         <label>flownarios_49_1upk6gvlabel</label>
         <locationX>176</locationX>

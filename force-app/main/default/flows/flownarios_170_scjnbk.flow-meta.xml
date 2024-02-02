@@ -37,6 +37,11 @@ flowName: flownarios_170_scjnbk
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_170_scjnbklabel</name>
         <label>flownarios_170_scjnbklabel</label>
         <locationX>176</locationX>

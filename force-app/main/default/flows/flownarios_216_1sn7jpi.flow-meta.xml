@@ -37,6 +37,11 @@ flowName: flownarios_216_1sn7jpi
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_216_1sn7jpilabel</name>
         <label>flownarios_216_1sn7jpilabel</label>
         <locationX>176</locationX>
@@ -55,7 +60,7 @@ flowName: flownarios_216_1sn7jpi
         </connector>
     </start>
     
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>this is an input</description>
         <name>inputA</name>

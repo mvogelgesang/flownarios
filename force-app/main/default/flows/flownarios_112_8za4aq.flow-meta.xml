@@ -47,7 +47,7 @@ flowName: flownarios_112_8za4aq
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Appy the Bobcat Enterprises</stringValue>
+                <stringValue>Appy the Bobcat Enterprises Too</stringValue>
             </value>
         </filters>
         <inputAssignments>

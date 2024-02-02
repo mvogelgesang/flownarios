@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { flownarioConstants, flownarioInputs } from "./flownarios-client";
+import { flownarioConstants, flownarioInputs } from "./flownarios-client.js";
 
 const backupFlownarioData = (postfix) => {
   postfix = `${postfix}_${new Date().toISOString()}`;

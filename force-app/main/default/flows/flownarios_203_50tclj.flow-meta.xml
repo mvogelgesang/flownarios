@@ -37,6 +37,11 @@ flowName: flownarios_203_50tclj
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_203_50tcljlabel</name>
         <label>flownarios_203_50tcljlabel</label>
         <locationX>176</locationX>

@@ -37,6 +37,11 @@ flowName: flownarios_8_li65eu
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_8_li65eulabel</name>
         <label>flownarios_8_li65eulabel</label>
         <locationX>176</locationX>

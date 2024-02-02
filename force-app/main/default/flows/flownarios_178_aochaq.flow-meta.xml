@@ -37,6 +37,11 @@ flowName: flownarios_178_aochaq
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_178_aochaqlabel</name>
         <label>flownarios_178_aochaqlabel</label>
         <locationX>176</locationX>

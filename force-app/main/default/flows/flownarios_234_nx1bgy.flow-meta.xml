@@ -37,6 +37,11 @@ flowName: flownarios_234_nx1bgy
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_234_nx1bgylabel</name>
         <label>flownarios_234_nx1bgylabel</label>
         <locationX>176</locationX>

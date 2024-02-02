@@ -37,6 +37,11 @@ flowName: flownarios_219_ofalx4
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+<fields>
+  <name>displayText</name>
+  <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
+  <fieldType>DisplayText</fieldType>
+</fields>
         <name>flownarios_219_ofalx4label</name>
         <label>flownarios_219_ofalx4label</label>
         <locationX>176</locationX>
