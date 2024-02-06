@@ -15,8 +15,7 @@ const flownarioConstants = {
   <fieldText>&lt;p&gt;hello&lt;/p&gt;</fieldText>
   <fieldType>DisplayText</fieldType>
 </fields>`,
-  RECORD_METADATA_UPDATE:
-    "Appy the Bobcat Enterprises Too",
+  RECORD_METADATA_UPDATE: "Appy the Bobcat Enterprises Too",
   DATA_FILE: "scripts/flownarioData.js",
   BACKUP_PATH: "scripts/backup"
 };
@@ -55,6 +54,36 @@ const flownarioInputs = [
   /* { v2FlowVersion: ["new", "none"] },*/
   { v2ApiVersion: ["same", "update"] }
 ];
+
+function addSelectBoxListener() {
+  // Call the updateURLParams function whenever a picklist value changes
+  const selectBoxes = document.querySelectorAll("select");
+  selectBoxes.forEach((selectBox) => {
+    selectBox.addEventListener("change", updateURLParams);
+  });
+}
+
+function consumeUrlParams() {
+  window.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const inputValues = {};
+
+    // Get input values from URL params
+    for (const [key, val] of Object.entries(flownarioInputsAsObject())) {
+      const paramValue = urlParams.get(key);
+      inputValues[key] = paramValue || "";
+    }
+
+    // Update select boxes with input values
+    for (const [key, value] of Object.entries(inputValues)) {
+      const selectBox = document.getElementById(key);
+      if (selectBox) {
+        selectBox.value = value;
+      }
+    }
+    howManyRemain();
+  });
+}
 
 const createFormFields = () => {
   const form = document.getElementById("form");
@@ -132,12 +161,13 @@ const flownarioInputsAsObject = () => {
 };
 
 const getDescription = (scenario) => {
-  let result = "";
+  let result = `<dl class="slds-dl_horizontal">`;
   for (const [key, value] of Object.entries(scenario)) {
     if (!key.startsWith("pkg") && !key.startsWith("customer")) {
-      result += `${key}: ${value}\n`;
+      result += `<dt class="slds-dl_horizontal__label">${key}:</dt><dd class="slds-dl_horizontal__detail">${value}</dd>`;
     }
   }
+  result += `</dl>`;
   return result;
 };
 
@@ -163,9 +193,19 @@ const howManyRemain = () => {
     });
   });
   if (filteredData.length == 1) {
-    document.getElementById("result").innerText =
-      filteredData[0].pkgV2DeployedState + " this is the result!";
-    document.getElementById("description").innerText = getDescription(
+    console.log(filteredData[0]);
+    const pkgV2DeployedStateString =
+      `<dl class="slds-dl_horizontal">` +
+      Object.entries(filteredData[0].pkgV2DeployedState)
+        .filter(([key]) => key !== "description")
+        .map(
+          ([key, value]) =>
+            `<dt class="slds-dl_horizontal__label">${key}:</dt><dd class="slds-dl_horizontal__detail">${value}</dd>`
+        )
+        .join("") +
+      `</dl>`;
+    document.getElementById("result").innerHTML = pkgV2DeployedStateString;
+    document.getElementById("description").innerHTML = getDescription(
       filteredData[0]
     );
   } else if (filteredData.length == 0) {
@@ -176,4 +216,36 @@ const howManyRemain = () => {
     `${filteredData.length} scenarios remain`;
 };
 
-export { createFormFields, flownarioConstants,flownarioInputs, getDescription, howManyRemain};
+const updateURLParams = () => {
+  const inputValues = {};
+
+  // Collect input values dynamically
+  for (const [key, val] of Object.entries(flownarioInputsAsObject())) {
+    const inputValue = document.getElementById(key).value.trim();
+    inputValues[key] = inputValue;
+  }
+
+  // Update URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  for (const [key, value] of Object.entries(inputValues)) {
+    if (value !== "") {
+      urlParams.set(key, value);
+    } else {
+      urlParams.delete(key);
+    }
+  }
+
+  // Update the URL
+  const newURL = `${window.location.pathname}?${urlParams.toString()}`;
+  window.history.replaceState(null, "", newURL);
+};
+
+export {
+  addSelectBoxListener,
+  consumeUrlParams,
+  createFormFields,
+  flownarioConstants,
+  flownarioInputs,
+  getDescription,
+  howManyRemain
+};

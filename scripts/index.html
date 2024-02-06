@@ -87,9 +87,11 @@
     <script src="./flownarios-client.js" type="module" defer></script>
 
     <script defer type="module">
-      import { createFormFields, howManyRemain } from "./flownarios-client.js";
+      import { addSelectBoxListener, consumeUrlParams, createFormFields, howManyRemain } from "./flownarios-client.js";
       createFormFields();
       howManyRemain();
+      addSelectBoxListener();
+      consumeUrlParams();
     </script>
   </body>
 </html>
