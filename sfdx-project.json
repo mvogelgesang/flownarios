@@ -4,12 +4,11 @@
       "path": "force-app/main/default",
       "package": "flownarios",
       "versionName": "ver 0.1",
-      "versionNumber": "2.0.0.NEXT",
+      "versionNumber": "2.1.0.NEXT",
       "ancestorVersion": "HIGHEST",
       "default": true,
       "versionDescription": "A collection of flow scenarios, flownarios, meant for testing outcomes between package version deployments."
-    },
-    {"path": "flow-overrides"}
+    }
   ],
   "name": "20240102_flownarios",
   "namespace": "mvpbo",
